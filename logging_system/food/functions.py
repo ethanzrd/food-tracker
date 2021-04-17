@@ -31,8 +31,8 @@ def food_natural_processing(food_name):
     elif food_data.status_code == 200:
         food_json = food_data.json()['foods'][0]
         food_arguments = {
-            'name': f"{food_json['food_name'].title()} - {food_json['serving_unit'].title()}"
-                    f" - {food_json['serving_qty']}",
+            'name': f"{food_json['food_name'].title()} - "
+                    f"{food_json['serving_qty']} {food_json['serving_unit'].title()}",
             'proteins': food_json['nf_protein'],
             'carbs': food_json['nf_total_carbohydrate'],
             'fats': food_json['nf_total_fat']
