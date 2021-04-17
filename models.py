@@ -2,8 +2,8 @@ from extensions import db
 import uuid
 
 log_food = db.Table('log_food',
-                    db.Column('date_id', db.Integer, db.ForeignKey('date.public_id'), primary_key=True),
-                    db.Column('food_id', db.Integer, db.ForeignKey('food.public_id'), primary_key=True)
+                    db.Column('date_id', db.Integer, db.ForeignKey('date.id'), primary_key=True),
+                    db.Column('food_id', db.Integer, db.ForeignKey('food.id'), primary_key=True)
                     )
 
 
