@@ -3,7 +3,8 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3 class="lean-h text-black">
-                    <i class="glyphicon glyphicon-plus-sign"></i> {% if not edit %}New Food Form (Manual Processing){% else %}Edit Food
+                    <i class="glyphicon glyphicon-plus-sign"></i> {% if not edit %}New Food Form (Manual Processing){%
+                    else %}Edit Food
                     Form{% endif %}
                 </h3>
                 <hr/>
@@ -16,9 +17,11 @@
                 </ul>
                 {% endif %}
                 {% endwith %}
-                {% if not edit %}<p>Don't know the nutritional values of the food item that you're looking for? Use <a href="{{ url_for('food.add_food_item') }}">natural language processing</a> instead.</p>{% endif %}
+                {% if not edit %}<p>Don't know the nutritional values of the food item that you're looking for? Use <a
+                    href="{{ url_for('food.add_food_item') }}">natural language processing</a> instead.</p>{% endif %}
                 <form action="{% if edit %}{{ url_for('food.edit_food_item', public_id=requested_food.public_id, manual=manual) }}
-                                {% else %}{{ url_for('food.add_food_item', manual=True) }}{% endif %}" method="POST" role="form">
+                                {% else %}{{ url_for('food.add_food_item', manual=True) }}{% endif %}" method="POST"
+                      role="form">
 
                     <div class="row">
                         <div class="col-lg-4">
@@ -27,6 +30,22 @@
                                 <input autofocus class="form-control"
                                        id="food-name" name="food-name" placeholder="Food Name"
                                        type="text" value="{% if edit %}{{ requested_food.name }}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="serving-unit">Serving Unit</label>
+                                <input autofocus class="form-control"
+                                       id="serving-unit" name="serving-unit" placeholder="Serving Unit (e.g. Grams)"
+                                       type="text" value="{% if edit %}{{ requested_food.name }}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input autofocus class="form-control"
+                                       id="quantity" name="quantity" placeholder="Quantity"
+                                       type="number" value="{% if edit %}{{ requested_food.name }}{% endif %}">
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -46,18 +65,17 @@
                                        value="{% if edit %}{{ requested_food.carbs }}{% endif %}">
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="fat">Fat</label>
                                 <input class="form-control" id="fat"
-                                       name="fat" placeholder="Fat" type="number" value="{% if edit %}{{ requested_food.fats }}{% endif %}">
+                                       name="fat" placeholder="Fat" type="number"
+                                       value="{% if edit %}{{ requested_food.fats }}{% endif %}">
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label style="visibility:hidden">submit</label>
                                 <button class="btn btn-primary btn-block" type="submit">

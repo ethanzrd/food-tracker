@@ -23,6 +23,7 @@
                         <tr>
                             <th style="width: 5%;">#</th>
                             <th>Name</th>
+                            <th style="width: 16%;">Quantity</th>
                             <th style="width: 10%;">Protein</th>
                             <th style="width: 16%;">Carbohydrates</th>
                             <th style="width: 10%;">Fat</th>
@@ -36,6 +37,7 @@
                         <tr>
                             <td>{{ food[0] }}</td>
                             <td>{{ current_food.name }}</td>
+                            <td>{{ current_food.quantity }} {{ current_food.serving_unit }}</td>
                             <td>{{ current_food.proteins }}</td>
                             <td>{{ current_food.carbs }}</td>
                             <td>{{ current_food.fats }}</td>

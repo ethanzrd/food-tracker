@@ -31,8 +31,9 @@ def food_natural_processing(food_name):
     elif food_data.status_code == 200:
         food_json = food_data.json()['foods'][0]
         food_arguments = {
-            'name': f"{food_json['food_name'].title()} - "
-                    f"{food_json['serving_qty']} {food_json['serving_unit'].title()}",
+            'name': food_json['food_name'].title(),
+            'quantity': food_json['serving_qty'],
+            'serving_unit': food_json['serving_unit'].title(),
             'proteins': food_json['nf_protein'],
             'carbs': food_json['nf_total_carbohydrate'],
             'fats': food_json['nf_total_fat']
@@ -83,6 +84,8 @@ def handle_addition_processing(natural, form):
     if not natural:
         try:
             food_arguments = {'name': form['food-name'].title().strip(),
+                              'serving-unit': form['serving-quantity'].title().strip(),
+                              'quantity': form['quantity'],
                               'proteins': form['protein'],
                               'carbs': form['carbohydrates'],
                               'fats': form['fat']}

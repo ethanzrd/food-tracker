@@ -10,11 +10,13 @@ log_food = db.Table('log_food',
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String, nullable=False)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
     proteins = db.Column(db.Integer, nullable=False)
     carbs = db.Column(db.Integer, nullable=False)
     fats = db.Column(db.Integer, nullable=False)
     deleted = db.Column(db.Boolean, default=False)
+    quantity = db.Column(db.Integer, default=1)
+    serving_unit = db.Column(db.String, nullable=False)
 
     @property
     def calories(self):
