@@ -1,0 +1,3 @@
+SECRET_KEY = 'string'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_DATABASE_URI = 'sqlite:///food-tracker.db'

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header.html" %}
+<body>
+
+<div class="container-fluid" id="wrapper">
+
+
+
+    <div class="row t20">
+        <div class="col-lg-4 col-lg-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                        <li style="margin-bottom: 10px;">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    <form method="POST" role="form">
+
+                        <div class="form-group">
+                            <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Date</label>
+                            <div class="input-group">
+                                <input aria-describedby="add-btn" aria-label="date" class="form-control"
+                                       name="date"
+                                       placeholder="Select New Date" type="date">
+                                <span class="input-group-btn">
+										<button class="btn btn-primary" id="add-btn" type="submit">
+										  <i class="glyphicon glyphicon-plus-sign"></i> Add Date
+										</button>
+									  </span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row t20">
+        <div class="col-lg-12">
+            <h4 class="text-center text-white"><strong>Existing Records ({{ existing_records }})</strong></h4>
+        </div>
+    </div>
+
+    <div class="row t20">
+        {% for date_item in dates %}
+        <div class="col-lg-3">
+            <div class="panel panel-warning">
+                <div class="panel-body text-bold">
+                    <i class="glyphicon glyphicon-calendar"></i> {{ date_item.date }}
+
+                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('date.view_summary', public_id=date_item.public_id) }}">
+                        View <i class="glyphicon glyphicon-arrow-right"></i>
+                    </a>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.protein }}</span> Protein</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.carbohydrate }}</span> Carbohydrate</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.fat }}</span> Fat</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.calories }}</span> Calories</li>
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% include "footer.html" %}
+
+</body>
+</html>
