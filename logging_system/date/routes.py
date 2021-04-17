@@ -25,7 +25,7 @@ def delete_date(public_id):
     requested_date = Date.query.filter_by(public_id=public_id).first()
     if requested_date:
         delete_log(requested_date)
-        return redirect(url_for('main.home', public_id=public_id))
+        return redirect(url_for('main.home'))
     else:
         return abort(404)
 
