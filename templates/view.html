@@ -103,7 +103,7 @@
                             </th>
                             <td>{{ current_food.calories }}</td>
                             <td>
-                                <a class="btn btn-danger btn-xs" href="{{ url_for('date.delete_log_item', public_id=requested_date.public_id, food_name=current_food.name) }}">
+                                <a class="btn btn-danger btn-xs" href="{{ url_for('date.delete_log_item', public_id=requested_date.public_id, food_id=current_food.public_id) }}">
                                     <i class="glyphicon glyphicon-trash"></i> Delete
                                 </a>
                             </td>

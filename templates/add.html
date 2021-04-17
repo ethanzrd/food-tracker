@@ -4,75 +4,11 @@
 <body>
 
 <div class="container-fluid" id="wrapper">
-
-    <div class="row t20">
-        <div class="col-lg-8 col-lg-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h3 class="lean-h text-black">
-                        <i class="glyphicon glyphicon-plus-sign"></i> New Food Form
-                    </h3>
-                    <hr/>
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <ul class=flashes>
-                        {% for message in messages %}
-                        <li style="margin-bottom: 10px;">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {% endwith %}
-                    <form method="POST" role="form">
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="food-name">Food Name</label>
-                                    <input autofocus class="form-control" id="food-name" name="food-name"
-                                           placeholder="Food Name" type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="protein">Protein</label>
-                                    <input class="form-control" id="protein" name="protein" placeholder="Protein"
-                                           type="number">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="carbohydrates">Carbohydrates</label>
-                                    <input class="form-control" id="carbohydrates" name="carbohydrates"
-                                           placeholder="Carbohydrates"
-                                           type="number">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="fat">Fat</label>
-                                    <input class="form-control" id="fat" name="fat" placeholder="Fat" type="number">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label style="visibility:hidden">submit</label>
-                                    <button class="btn btn-primary btn-block" type="submit">
-                                        <i class="glyphicon glyphicon-upload"></i> Submit
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    {% if not natural %}
+    {% include "manual-form.html" %}
+    {% else %}
+    {% include "natural-form.html" %}
+    {% endif %}
     <div class="row t20">
         <div class="col-lg-8 col-lg-offset-2">
             <div class="panel panel-default">
@@ -106,10 +42,10 @@
                             </th>
                             <td>{{ current_food.calories }}</td>
                             <td>
-                                <a class="btn btn-default btn-xs" href="{{ url_for('food.edit_food_item', public_id=current_food.public_id) }}">
+                                <a class="btn btn-default btn-xs" href="{{ url_for('food.edit_food_item', public_id=current_food.public_id, manual=not natural) }}">
                                     <i class="glyphicon glyphicon-pencil"></i> Edit
                                 </a>
-                                <a class="btn btn-danger btn-xs" href="{{ url_for('food.delete_food_item', public_id=current_food.public_id) }}">
+                                <a class="btn btn-danger btn-xs" href="{{ url_for('food.delete_food_item', public_id=current_food.public_id, manual=not natural) }}">
                                     <i class="glyphicon glyphicon-trash"></i> Delete
                                 </a>
                             </td>

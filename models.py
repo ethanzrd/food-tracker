@@ -9,7 +9,7 @@ log_food = db.Table('log_food',
 
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String, default=str(uuid.uuid4()))
+    public_id = db.Column(db.String, nullable=False)
     name = db.Column(db.String(50), unique=True, nullable=False)
     proteins = db.Column(db.Integer, nullable=False)
     carbs = db.Column(db.Integer, nullable=False)
@@ -25,9 +25,17 @@ class Food(db.Model):
         not_required = ['id', 'public_id', 'deleted']
         return [column.name for column in Food.__table__.columns if column.name not in not_required]
 
+    __mapper_args__ = {
+        "order_by": id.desc()
+    }
+
 
 class Date(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    public_id = db.Column(db.String, default=str(uuid.uuid4()))
+    public_id = db.Column(db.String, nullable=False)
     date = db.Column(db.String, nullable=False)
     foods = db.relationship('Food', secondary=log_food, lazy='dynamic')
+
+    __mapper_args__ = {
+        "order_by": id.desc()
+    }

@@ -15,7 +15,7 @@ def view_summary(public_id):
             add_to_log(food_name=request.form.get('food-select'), requested_date=requested_date)
         return render_template('view.html', requested_date=get_date_dict(requested_date),
                                foods=get_foods(requested_date.foods, include_deleted=True),
-                               all_foods=get_foods(Food.query.all()))
+                               all_foods=get_foods(Food.query.all()), title='View Summary')
     else:
         return abort(404)
 
@@ -32,10 +32,10 @@ def delete_date(public_id):
 
 @date_routing.route('/delete-item/<public_id>')
 def delete_log_item(public_id):
-    food_name = request.args.get('food_name')
+    food_id = request.args.get('food_id')
     requested_date = Date.query.filter_by(public_id=public_id).first()
     if requested_date:
-        delete_from_log(food_name, requested_date)
+        delete_from_log(food_id, requested_date)
         return redirect(url_for('date.view_summary', public_id=public_id))
     else:
         return abort(404)
