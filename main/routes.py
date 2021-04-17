@@ -1,7 +1,7 @@
 from flask import Blueprint, request, flash, render_template, redirect, url_for
 
 from extensions import db
-from logging_system.date.functions import add_date, get_dates
+from logging_system.date.functions import add_log, get_dates
 from models import Date
 from sqlalchemy.exc import OperationalError
 
@@ -16,7 +16,7 @@ def home():
         if '-' not in given_date:
             flash("Please provide a valid date.")
         else:
-            add_date(given_date)
+            add_log(given_date)
     try:
         requested_dates = Date.query.all()
     except OperationalError:

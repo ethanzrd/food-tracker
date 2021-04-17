@@ -25,7 +25,7 @@ def get_dates(dates):
     return requested_dates
 
 
-def add_date(given_date):
+def add_log(given_date):
     requested_date = format_date(given_date)
     existing_date = Date.query.filter_by(date=requested_date).first()
     if not existing_date:
@@ -34,6 +34,11 @@ def add_date(given_date):
         db.session.commit()
     else:
         flash("This date already exists.")
+
+
+def delete_log(requested_date):
+    db.session.delete(requested_date)
+    db.session.commit()
 
 
 def add_to_log(food_name, requested_date):

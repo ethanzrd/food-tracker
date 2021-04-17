@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, abort, redirect, url_for
 
-from logging_system.date.functions import add_to_log, get_date_dict, delete_from_log
+from logging_system.date.functions import add_to_log, get_date_dict, delete_from_log, delete_log
 from logging_system.food.functions import get_foods
 from models import Date, Food
 
@@ -21,6 +21,16 @@ def view_summary(public_id):
 
 
 @date_routing.route('/delete/<public_id>')
+def delete_date(public_id):
+    requested_date = Date.query.filter_by(public_id=public_id).first()
+    if requested_date:
+        delete_log(requested_date)
+        return redirect(url_for('main.home', public_id=public_id))
+    else:
+        return abort(404)
+
+
+@date_routing.route('/delete-item/<public_id>')
 def delete_log_item(public_id):
     food_name = request.args.get('food_name')
     requested_date = Date.query.filter_by(public_id=public_id).first()

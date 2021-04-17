@@ -6,7 +6,6 @@
 <div class="container-fluid" id="wrapper">
 
 
-
     <div class="row t20">
         <div class="col-lg-4 col-lg-offset-4">
             <div class="panel panel-default">
@@ -54,16 +53,24 @@
             <div class="panel panel-warning">
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> {{ date_item.date }}
-
-                    <a class="btn btn-primary btn-xs pull-right" href="{{ url_for('date.view_summary', public_id=date_item.public_id) }}">
+                    <a style="margin-left: 10px;" class="btn btn-primary btn-xs pull-right"
+                       href="{{ url_for('date.view_summary', public_id=date_item.public_id) }}">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
+                    </a>
+                    <a class="btn btn-danger btn-xs pull-right"
+                       href="{{ url_for('date.delete_date', public_id=date_item.public_id) }}">
+                        <i class="glyphicon glyphicon-trash"></i> Delete
                     </a>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.protein }}</span> Protein</li>
-                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.carbohydrate }}</span> Carbohydrate</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.protein }}</span> Protein
+                    </li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.carbohydrate }}</span>
+                        Carbohydrate
+                    </li>
                     <li class="list-group-item text-bold"><span class="badge">{{ date_item.fat }}</span> Fat</li>
-                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.calories }}</span> Calories</li>
+                    <li class="list-group-item text-bold"><span class="badge">{{ date_item.calories }}</span> Calories
+                    </li>
                 </ul>
             </div>
         </div>
