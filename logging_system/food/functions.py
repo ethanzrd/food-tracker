@@ -84,7 +84,7 @@ def handle_addition_processing(natural, form):
     if not natural:
         try:
             food_arguments = {'name': form['food-name'].title().strip(),
-                              'serving-unit': form['serving-quantity'].title().strip(),
+                              'serving_unit': form['serving-unit'].title().strip(),
                               'quantity': form['quantity'],
                               'proteins': form['protein'],
                               'carbs': form['carbohydrates'],
