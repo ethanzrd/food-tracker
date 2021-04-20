@@ -13,5 +13,5 @@ requests==2.24.0
 WTForms==2.3.3
 itsdangerous==1.1.0
 flask_login==0.5.0
-flask_bootstrap=3.3.7.1
+flask_bootstrap==3.3.7.1
 flask_mail==0.9.1
