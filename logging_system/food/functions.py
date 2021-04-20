@@ -1,6 +1,8 @@
+from flask_login import current_user
+
 from models import Food, Date
 from extensions import db
-from flask import flash, redirect, url_for, abort, request
+from flask import flash, redirect, url_for, abort
 import requests
 from settings import NUTRITIONIX_HEADERS
 import uuid
@@ -49,6 +51,7 @@ def item_addition(food_arguments, manual=False):
     else:
         food_arguments = food_natural_processing(food_name)
     if isinstance(food_arguments, dict):
+        food_arguments['user'] = current_user
         requested_item = Food.query.filter_by(name=food_arguments['name']).first()
         if not requested_item:
             food_arguments['public_id'] = str(uuid.uuid4())
@@ -83,17 +86,17 @@ def save_item_addition(food_arguments):
 def handle_addition_processing(natural, form):
     if not natural:
         try:
-            food_arguments = {'name': form['food-name'].title().strip(),
-                              'serving_unit': form['serving-unit'].title().strip(),
-                              'quantity': form['quantity'],
-                              'proteins': form['protein'],
-                              'carbs': form['carbohydrates'],
-                              'fats': form['fat']}
+            food_arguments = {'name': form.food_name.data.title().strip(),
+                              'serving_unit': form.serving_unit.data.title().strip(),
+                              'quantity': form.quantity.data,
+                              'proteins': form.protein.data,
+                              'carbs': form.carbs.data,
+                              'fats': form.fat.data}
         except KeyError:
             return abort(400)
     else:
         try:
-            food_arguments = {'name': form['food-description'].strip()}
+            food_arguments = {'name': form.description.data.strip()}
         except KeyError:
             return abort(400)
     return item_addition(food_arguments=food_arguments, manual=not natural)
@@ -103,20 +106,19 @@ def edit_item(requested_food, food_arguments, manual=False):
     kwargs = {}
     if manual:
         kwargs['manual'] = True
-    requested_food.name = food_arguments['food-name']
-    requested_food.proteins = food_arguments['protein']
-    requested_food.carbs = food_arguments['carbohydrates']
-    requested_food.fats = food_arguments['fat']
+    requested_food.name = food_arguments.food_name.data
+    requested_food.proteins = food_arguments.protein.data
+    requested_food.carbs = food_arguments.carbs.data
+    requested_food.fats = food_arguments.fat.data
     db.session.commit()
     return redirect(url_for('food.add_food_item', **kwargs))
 
 
-def delete_item(requested_item):
+def delete_item(requested_item, manual=False):
     kwargs = {}
-    manual = request.args.get('manual', False)
     if manual:
         kwargs['manual'] = True
-    for date in Date.query.all():
+    for date in current_user.dates:
         if requested_item in date.foods:
             requested_item.deleted = True
             db.session.commit()

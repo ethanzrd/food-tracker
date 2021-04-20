@@ -13,27 +13,20 @@
                     {% if messages %}
                     <ul class=flashes>
                         {% for message in messages %}
-                        <li style="margin-bottom: 10px;">{{ message }}</li>
+                        <li style="margin-top: 10px;">{{ message }}</li>
                         {% endfor %}
                     </ul>
                     {% endif %}
                     {% endwith %}
                     <form method="POST" role="form">
-
+                        {{ form.hidden_tag() }}
                         <div class="form-group">
-                            <label>Add Food</label>
+                            {{ form.item_choice.label(style="margin-top: 10px;") }}
                             <div class="input-group">
                                 {% if all_foods %}
-                                <select class="form-control" name="food-select">
-                                    {% for food_item in all_foods %}
-                                    {% set food = food_item[1] %}
-                                    <option value="{{ food.name }}">{{ food.name }}</option>
-                                    {% endfor %}
-                                </select>
+                                    {{ form.item_choice(class="form-control") }}
                                 <span class="input-group-btn">
-										<button class="btn btn-primary" id="add-btn" type="submit">
-										  <i class="glyphicon glyphicon-plus-sign"></i> Add Food
-										</button>
+										{{ form.submit(class="btn btn-primary") }}
 									  </span>
                                 {% else %}
                                 No Food Items Available.

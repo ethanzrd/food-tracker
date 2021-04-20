@@ -1,4 +1,6 @@
 from flask import flash
+from flask_login import login_required, current_user
+
 from extensions import db
 from models import Date, Food
 from utils import format_date
@@ -21,16 +23,20 @@ def get_date_dict(requested_date):
 
 def get_dates(dates):
     requested_dates = []
-    for date in dates:
-        requested_dates.append(get_date_dict(date))
+    try:
+        for date in dates:
+            requested_dates.append(get_date_dict(date))
+    except TypeError:
+        pass
     return requested_dates
 
 
+@login_required
 def add_log(given_date):
     requested_date = format_date(given_date)
     existing_date = Date.query.filter_by(date=requested_date).first()
     if not existing_date:
-        new_date = Date(date=requested_date, public_id=str(uuid.uuid4()))
+        new_date = Date(date=requested_date, public_id=str(uuid.uuid4()), user=current_user)
         db.session.add(new_date)
         db.session.commit()
     else:
@@ -65,11 +71,12 @@ def delete_from_log(food_id, requested_date):
                 break
         else:
             return flash("This item does not exist in your log.")
-        for date in Date.query.all():
-            if requested_item in date.foods:
-                break
-        else:
-            db.session.delete(requested_item)
-            db.session.commit()
+        if requested_item.deleted:
+            for date in Date.query.all():
+                if requested_item in date.foods:
+                    break
+            else:
+                db.session.delete(requested_item)
+                db.session.commit()
     else:
         flash("This item does not exist in the food database.")

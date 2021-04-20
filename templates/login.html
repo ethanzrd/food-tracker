@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+<body>
+
+<div class="container-fluid" id="wrapper">
+
+
+    <div class="row t20">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="lean-h text-black">
+                        <i class="glyphicon glyphicon-plus-sign"></i> {{ title }}
+                    </h3>
+                    <hr/>
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                        <li style="margin-bottom: 10px;">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                    {% if redirected %}
+                    <p>You must log in before using this application.</p>
+                    {% endif %}
+                    {% if title == 'Login' %}
+                    <p>Don't have an account? <a href="{{ url_for('login_system.register') }}">Register</a></p>
+                    <p>Forgot your password? <a href="{{ url_for('verification.generate_forget') }}">Recover password</a></p>
+                    {% elif title == 'Register' %}
+                    <p>Already have an account? <a href="{{ url_for('login_system.login') }}">Log in</a></p>
+                    {% endif %}
+                    <br>
+                    {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "footer.html" %}
+</body>

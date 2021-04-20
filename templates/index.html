@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% import "bootstrap/wtf.html" as wtf %}
 {% include "header.html" %}
 <body>
 
@@ -19,23 +20,24 @@
                     </ul>
                     {% endif %}
                     {% endwith %}
-                    <form method="POST" role="form">
-
+                    <form action="{{ url_for('main.home') }}" method="POST">
+                        {{ form.hidden_tag() }}
+                        {% for field, errors in form.errors.items() %}
+                        <div class="alert alert-error">
+                            {{ form[field].label }}: {{ ', '.join(errors) }}
+                        </div>
+                        {% endfor %}
                         <div class="form-group">
                             <label><i class="glyphicon glyphicon-plus-sign"></i> Add New Date</label>
                             <div class="input-group">
-                                <input aria-describedby="add-btn" aria-label="date" class="form-control"
-                                       name="date"
-                                       placeholder="Select New Date" type="date">
+                                {{ form.date(type="date", placeholder="Select New Date", class="form-control") }}
                                 <span class="input-group-btn">
-										<button class="btn btn-primary" id="add-btn" type="submit">
-										  <i class="glyphicon glyphicon-plus-sign"></i> Add Date
-										</button>
+										{{ form.submit(class="btn btn-primary") }}
 									  </span>
                             </div>
                         </div>
-
                     </form>
+
                 </div>
             </div>
         </div>
@@ -53,8 +55,9 @@
             <div class="panel panel-warning">
                 <div class="panel-body text-bold">
                     <i class="glyphicon glyphicon-calendar"></i> {{ date_item.date }}
-                    <a style="margin-left: 10px;" class="btn btn-primary btn-xs pull-right"
-                       href="{{ url_for('date.view_summary', public_id=date_item.public_id) }}">
+                    <a class="btn btn-primary btn-xs pull-right"
+                       href="{{ url_for('date.view_summary', public_id=date_item.public_id) }}"
+                       style="margin-left: 10px;">
                         View <i class="glyphicon glyphicon-arrow-right"></i>
                     </a>
                     <a class="btn btn-danger btn-xs pull-right"

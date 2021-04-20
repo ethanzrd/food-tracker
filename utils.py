@@ -1,4 +1,6 @@
 import datetime as dt
+import uuid
+from flask_login import current_user
 
 
 def format_date(date):
@@ -13,5 +15,18 @@ def format_date(date):
     return f'{current_month} {day}, {year}'
 
 
-def validate_form(form, required_arguments):
-    return list(form.keys()) == required_arguments
+def get_current_date():
+    now = dt.datetime.now()
+    return format_date(f'{now.year}-{now.month}-{now.day}')
+
+
+def generate_id():
+    return str(uuid.uuid4())
+
+
+def get_user_foods():
+    try:
+        requested_lst = [(food.name, food.name) for food in current_user.foods]
+        return requested_lst
+    except AttributeError:
+        return []

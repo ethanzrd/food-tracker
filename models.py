@@ -1,5 +1,7 @@
+from flask_login import UserMixin
+
 from extensions import db
-import uuid
+from sqlalchemy.orm import relationship
 
 log_food = db.Table('log_food',
                     db.Column('date_id', db.Integer, db.ForeignKey('date.id'), primary_key=True),
@@ -7,9 +9,24 @@ log_food = db.Table('log_food',
                     )
 
 
+class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    confirmed_email = db.Column(db.Boolean, default=False)
+    join_date = db.Column(db.String)
+    dates = relationship('Date', back_populates='user')
+    foods = relationship('Food', back_populates='user')
+
+
 class Food(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = relationship('User', back_populates='foods')
     name = db.Column(db.String, unique=True, nullable=False)
     proteins = db.Column(db.Integer, nullable=False)
     carbs = db.Column(db.Integer, nullable=False)
@@ -35,6 +52,8 @@ class Food(db.Model):
 class Date(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     public_id = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = relationship('User', back_populates='dates')
     date = db.Column(db.String, nullable=False)
     foods = db.relationship('Food', secondary=log_food, lazy='dynamic')
 

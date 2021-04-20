@@ -29,12 +29,21 @@
         <div class="row t20">
             <div class="col-lg-4 col-lg-offset-4">
                 <ul class="nav nav-pills nav-justified">
-                    <li class="{% if title == 'Home' or title == 'View Summary' %} active {% endif %}" role="presentation">
+                    {% if current_user.is_authenticated %}
+                    <li class="{% if title == 'Home' or title == 'View Summary' %} active {% endif %}"
+                        role="presentation">
                         <a href="{{ url_for('main.home') }}" title="Home">Home</a>
                     </li>
-                    <li class="{% if title == 'Add Food Item' or title == 'Edit Food Item' %} active {% endif %}" role="presentation">
+                    <li class="{% if title == 'Add Food Item' or title == 'Edit Food Item' %} active {% endif %}"
+                        role="presentation">
                         <a href="{{ url_for('food.add_food_item') }}" title="Add Food Item">Add Food Item</a>
                     </li>
+                    {% else %}
+                    <li class="{% if title == 'Login' %} active {% endif %}" role="presentation">
+                        <a href="{{ url_for('login_system.login') }}" title="Login">Login</a>
+                    <li class="{% if title == 'Register' %} active {% endif %}" role="presentation">
+                        <a href="{{ url_for('login_system.register') }}" title="Register">Register</a>
+                    {% endif %}
                 </ul>
             </div>
         </div>

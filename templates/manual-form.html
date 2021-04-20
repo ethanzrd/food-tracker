@@ -17,74 +17,40 @@
                 </ul>
                 {% endif %}
                 {% endwith %}
-                {% if not edit %}<p>Don't know the nutritional values of the food item that you're looking for? Use <a
-                    href="{{ url_for('food.add_food_item') }}">natural language processing</a> instead.</p>{% endif %}
-                <form action="{% if edit %}{{ url_for('food.edit_food_item', public_id=requested_food.public_id, manual=manual) }}
-                                {% else %}{{ url_for('food.add_food_item', manual=True) }}{% endif %}" method="POST"
-                      role="form">
-
+                {% if not edit %}<p style="margin-bottom: 20px;">Don't know the nutritional values of the food item that
+                you're looking for? Use <a
+                        href="{{ url_for('food.add_food_item') }}">natural language processing</a> instead.</p>{% endif
+                %}
+                <form action="{% if not edit %}{{url_for('food.add_food_item', manual=True)}}{% else %}{{url_for('food.edit_food_item', public_id=requested_food.public_id, manual=manual)}}{% endif %}" method="POST">
+                    {{ form.hidden_tag() }}
+                    {% for field, errors in form.errors.items() %}
+                    <div class="alert alert-error">
+                        {{ form[field].label }}: {{ ', '.join(errors) }}
+                    </div>
+                    {% endfor %}
                     <div class="row">
+                        {% for field in form %}
+                        {% if field.type == "StringField" or field.type == "IntegerField" %}
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <label for="food-name">Food Name</label>
-                                <input autofocus class="form-control"
-                                       id="food-name" name="food-name" placeholder="Food Name"
-                                       type="text" value="{% if edit %}{{ requested_food.name }}{% endif %}">
+                                {{ field.label }}
+                                {% if field.type != "IntegerField" %}
+                                {{ field(class="form-control", placeholder=field.name|replace("_", " ")|title) }}
+                                {% else %}
+                                {{ field(class="form-control", placeholder=field.name|replace("_", " ")|title, type="number") }}
+                                {% endif %}
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="serving-unit">Serving Unit</label>
-                                <input autofocus class="form-control"
-                                       id="serving-unit" name="serving-unit" placeholder="Serving Unit (e.g. Grams)"
-                                       type="text" value="{% if edit %}{{ requested_food.name }}{% endif %}">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input autofocus class="form-control"
-                                       id="quantity" name="quantity" placeholder="Quantity"
-                                       type="number" value="{% if edit %}{{ requested_food.name }}{% endif %}">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="protein">Protein</label>
-                                <input class="form-control"
-                                       id="protein" name="protein" placeholder="Protein" type="number"
-                                       value="{% if edit %}{{ requested_food.proteins }}{% endif %}">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="carbohydrates">Carbohydrates</label>
-                                <input class="form-control" id="carbohydrates"
-                                       name="carbohydrates" placeholder="Carbohydrates"
-                                       type="number"
-                                       value="{% if edit %}{{ requested_food.carbs }}{% endif %}">
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="fat">Fat</label>
-                                <input class="form-control" id="fat"
-                                       name="fat" placeholder="Fat" type="number"
-                                       value="{% if edit %}{{ requested_food.fats }}{% endif %}">
-                            </div>
-                        </div>
-
+                        {% endif %}
+                        {% endfor %}
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label style="visibility:hidden">submit</label>
-                                <button class="btn btn-primary btn-block" type="submit">
-                                    <i class="glyphicon glyphicon-upload"></i> Submit
-                                </button>
+                                {{ form.submit(class="btn btn-primary btn-block") }}
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </form>
             </div>
         </div>
